@@ -1,6 +1,6 @@
-# LocoVLM
+# DreamFlow
 
-This is the repository that contains github-pages source code for the [anonymous LocoVLM submission website].
+This is the repository that contains github-pages source code for the [DreamFlow(ICRA'26)](https://ziwon-park.github.io/dreamflow/).
 
 This page is based on the template from Nerfies.
 
