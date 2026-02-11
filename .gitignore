@@ -1,0 +1,16 @@
+# Source materials (large, not needed for deployment)
+DreamFlow_files/
+._DreamFlow_files
+
+# macOS
+.DS_Store
+._*
+
+# Editor
+*.swp
+*.swo
+*~
+
+# Old LocoVLM assets
+static/examples/
+static/prompts/

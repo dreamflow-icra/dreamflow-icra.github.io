@@ -3,24 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="description"
-        content="LocoVLM">
-  <meta name="keywords" content="Locomotion, reinforcement learning, vision-language models">
+        content="DreamFlow: Local Navigation Beyond Observation via Conditional Flow Matching in the Latent Space">
+  <meta name="keywords" content="DreamFlow, local navigation, conditional flow matching, quadrupedal robot, reinforcement learning">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>LocoVLM</title>
-
-  <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-
-    gtag('js', new Date());
-
-    gtag('config', 'G-PYVRSFMDRL');
-  </script>
+  <title>DreamFlow</title>
 
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
         rel="stylesheet">
@@ -32,184 +18,489 @@
   <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <link rel="stylesheet" href="./static/css/index.css">
-  <!-- <link rel="icon" href="./static/images/favicon.svg"> -->
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script defer src="./static/js/fontawesome.all.min.js"></script>
   <script src="./static/js/bulma-carousel.min.js"></script>
   <script src="./static/js/bulma-slider.min.js"></script>
   <script src="./static/js/index.js"></script>
+
+  <style>
+    .video-compare {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    @media screen and (max-width: 768px) {
+      .video-compare {
+        grid-template-columns: 1fr;
+      }
+    }
+    .video-compare video {
+      width: 100%;
+      border-radius: 8px;
+    }
+    .video-compare .video-label {
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 0.5rem;
+      font-size: 1.1rem;
+    }
+    .sim-env-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.5rem;
+    }
+    @media screen and (max-width: 768px) {
+      .sim-env-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    .sim-env-grid img {
+      width: 100%;
+      border-radius: 6px;
+    }
+    .heightmap-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+    @media screen and (max-width: 768px) {
+      .heightmap-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .heightmap-grid video {
+      width: 100%;
+      border-radius: 8px;
+    }
+    .video-triple {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+    }
+    @media screen and (max-width: 768px) {
+      .video-triple {
+        grid-template-columns: 1fr;
+      }
+    }
+    .video-triple video {
+      width: 100%;
+      border-radius: 8px;
+    }
+    section.section {
+      padding: 3rem 1.5rem;
+    }
+    section.section.is-small {
+      padding: 2rem 1.5rem;
+    }
+  </style>
 </head>
 <body>
 
-
+<!-- ======== HERO ======== -->
 <section class="hero">
   <div class="hero-body">
     <div class="container is-max-desktop">
       <div class="columns is-centered">
         <div class="column has-text-centered">
-          <h1 class="title is-1 publication-title">LocoVLM</h1>
-          <h1 class="title is-2 publication-title">Grounding Vision and Language for Adapting Versatile Legged Locomotion Policies</h1>
-          <div class="is-size-5 publication-authors">
+          <h1 class="title is-1 publication-title">DreamFlow</h1>
+          <h2 class="title is-3 publication-title" style="margin-top: -0.5rem;">
+            Local Navigation Beyond Observation via Conditional Flow Matching in the Latent Space
+          </h2>
+
+          <div class="is-size-5 publication-authors" style="margin-top: 1rem;">
             <span class="author-block">
-              Anonymous Submission for IEEE ICRA 2026
+              Jiwon Park<sup>1*</sup>,
+            </span>
+            <span class="author-block">
+              Dongkyu Lee<sup>2*</sup>,
+            </span>
+            <span class="author-block">
+              I Made Aswin Nahrendra<sup>1</sup>,
+            </span>
+            <span class="author-block">
+              Jaeyoung Lim<sup>3</sup>,
+            </span>
+            <span class="author-block">
+              Hyun Myung<sup>1&dagger;</sup>
             </span>
           </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<section class="section is-small" id="overview">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered">
-      
-      <div class="column is-four-fifths has-text-justified is-hidden-mobile">
-        <h2 class="subtitle ">
-          <strong>LocoVLM</strong> is a versatile legged locomotion adaptation framework that enables quadrupedal robots to follow a given vision and language instructions in real-time while adhering to locomotion safety constraints.
-        </h2>
-      </div>
+          <div class="is-size-6 publication-authors" style="margin-top: 0.5rem;">
+            <span class="author-block"><sup>1</sup>KAIST,</span>
+            <span class="author-block"><sup>2</sup>URobotics,</span>
+            <span class="author-block"><sup>3</sup>University of California, Berkeley</span>
+          </div>
+          <div class="is-size-7" style="margin-top: 0.3rem; color: #777;">
+            <span><sup>*</sup>Equal contribution</span>&nbsp;&nbsp;
+            <span><sup>&dagger;</sup>Corresponding author</span>
+          </div>
 
-      <div class="column is-four-fifths is-hidden-tablet has-text-justified-mobile">
-        <p>
-          <strong>LocoVLM</strong> is a versatile legged locomotion adaptation framework that enables quadrupedal robots to follow a given vision and language instructions in real-time while adhering to locomotion safety constraints.
-        </p>
-      </div>
-
-
-    </div>
-  </div>
-</section>
-
-<section class="section">
-  <div class="container is-max-desktop has-text-centered">
-
-    <video autoplay muted loop playsinline preload="none" controls loading="lazy" style="width: 100%; height: auto; margin-bottom: 1rem;">
-      <source src="./static/videos/locovlm_demo.mp4" type="video/mp4">
-    </video>
-
-    <figure>
-      <img src="./static/images/locovlm_overview.png" alt="Overview" style="width: 100%; height: auto;">
-    </figure>
-
-  </div>
-</section>
-
-
-<section class="section is-small has-background-black has-text-light" id="task-tracking">
-  <div class="container is-max-desktop">
-
-    <h2 class="title is-1 has-text-white  is-size-4-mobile">Style Tracking with Compliance</h2>
-    <div class="content has-text-justified">
-      <p>
-        Following gait styles are fancy. But following it too much can be dangerous.
-        What if we follow these gait styles but allow some room for mistake?
-        Here comes the compliant gait tracking, yielding the best of both worlds.
-      </p>
-    </div>
-
-    <video autoplay muted loop playsinline preload="none" controls loading="lazy" height="100%">
-      <source src="./static/videos/go2_compliant_tracking.mp4" type="video/mp4">
-    </video>
-    
-</section>
-
-<section class="section is-small" id="skillset">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered">
-      <div class="column is-four-fifths">
-
-        <h2 class="title is-1 has-text-centered is-size-4-mobile">Scaling-up Instructions</h2>
-        <div class="content">
-          <p>
-            Data collection and labeling is always expensive and tedious.
-            But what if we can ask our friendly LLM to do it for us?
-          </p>
-        </div>
-
-        <div class="content">
-          <p>
-            LocoVLM firstly constructs a skillset database that bridges language instructions with robot commands.
-            We prompted a large language model (LLM) to generate instructions, whether it is a mimicking task, scene descriptions, or even a simple direct command.
-            Then, we asked the LLM to utilize these instructions to generate the appropriate robot commands.
-            And voilà, we have a skillset database that can be used to instruct our robot.
-          </p>
-
-          <figure>
-            <img src="./static/images/skill_database.png" alt="Skill" style="width: 100%; height: auto;">
-          </figure>
-
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-</section>
-
-<section class="section is-small" id="deployment">
-  <div class="container is-max-desktop">
-    <div class="columns is-centered">
-      <div class="column is-four-fifths">
-
-        <h2 class="title is-1 has-text-centered is-size-4-mobile">Real-time Vision-Language Grounding</h2>
-        <div class="content">
-          <p>
-            Now that we have a skillset database, how can we make use of it?
-          </p>
-        </div>
-
-        <div class="content">
-          <p>
-            We used <a href="https://arxiv.org/abs/2301.12597" target="_blank" rel="noopener noreferrer">BLIP-2</a>, a vision-language model, to ground the language (or image) instructions to retrieve the corresponding robot commands from the skill database.  
-            We proposed a novel mixed-precision retrieval method that balances retrieval speed and accuracy.
-          </p>
-          
-
-          <div class="columns is-centered">
-            <div class="column is-half">
-              <figure class="image is-4by3">
-                <img src="./static/images/retrieval.png" alt="Figure 1" style="width: 100%; height: auto;">
-              </figure>
-            </div>
-            <div class="column is-half">
-              <figure class="image is-4by3">
-                <img src="./static/images/retrieval_accuracy.png" alt="Figure 2" style="width: 100%; height: auto;">
-              </figure>
+          <!-- Links -->
+          <div class="column has-text-centered" style="margin-top: 1rem;">
+            <div class="publication-links">
+              <span class="link-block">
+                <a href="#" class="button is-normal is-rounded is-dark" style="pointer-events: none; opacity: 0.6;">
+                  <span class="icon">
+                    <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv (TBD)</span>
+                </a>
+              </span>
+              <span class="link-block">
+                <a href="#" class="button is-normal is-rounded is-dark" style="pointer-events: none; opacity: 0.6;">
+                  <span class="icon">
+                    <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code (TBD)</span>
+                </a>
+              </span>
             </div>
           </div>
-          
 
         </div>
       </div>
-
     </div>
   </div>
-
 </section>
 
-<section class="section is-small has-background-black has-text-light" id="task-tracking">
+<!-- ======== ABSTRACT ======== -->
+<section class="section is-small" id="abstract">
   <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3 has-text-centered">Abstract</h2>
+        <div class="content has-text-justified">
+          <p>
+            Local navigation in cluttered environments often suffers from dense obstacles and frequent local minima.
+            Conventional local planners rely on heuristics and are prone to failure, while deep reinforcement learning (DRL)-based
+            approaches provide adaptability but are constrained by limited onboard sensing.
+            These limitations lead to navigation failures because the robot cannot perceive structures outside its field of view.
+          </p>
+          <p>
+            In this paper, we propose <strong>DreamFlow</strong>, a DRL-based local navigation framework that extends the robot's
+            perceptual horizon through <strong>conditional flow matching (CFM)</strong>. The proposed CFM-based prediction module
+            learns probabilistic mapping between local height map latent representation and broader spatial representation
+            conditioned on navigation context. This enables the navigation policy to predict unobserved environmental features
+            and proactively avoid potential local minima.
+          </p>
+          <p>
+            Experimental results demonstrate that DreamFlow outperforms existing methods in terms of latent prediction accuracy
+            and navigation performance in simulation. The proposed method was further validated in cluttered real-world environments
+            with a quadrupedal robot.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <h2 class="title is-1 has-text-white  is-size-4-mobile">How Hard is it to Apply to Other Embodiments?</h2>
-    <div class="content has-text-justified">
+<!-- ======== MAIN DEMO ======== -->
+<section class="section" id="demo">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">DreamFlow vs. Baseline</h2>
+    <p class="has-text-centered" style="margin-bottom: 1.5rem;">
+      DreamFlow predicts terrain beyond the sensor range, enabling collision-free navigation where the baseline fails.
+    </p>
+    <div class="video-compare">
+      <div>
+        <p class="video-label">Baseline</p>
+        <video autoplay muted loop playsinline controls>
+          <source src="./static/videos/main/baseline.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div>
+        <p class="video-label" style="color: #3273dc;">DreamFlow (Ours)</p>
+        <video autoplay muted loop playsinline controls>
+          <source src="./static/videos/main/dreamflow.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== FRAMEWORK ======== -->
+<section class="section is-small has-background-light" id="method">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Method</h2>
+
+    <div class="content has-text-justified" style="margin-bottom: 1.5rem;">
       <p>
-        As easy as 1, 2, 3!
-        Simply train the compliant style tracking policy and you can use the same skill database to other embodiments.
-        (Of course you can make more specific skill database too!)
+        The overall architecture of DreamFlow is designed as an <strong>asymmetric actor-critic framework</strong>.
+        The actor uses a local height map to derive a local environmental latent representation.
+        The pre-trained CFM module then predicts an <em>extended</em> latent vector&mdash;representing terrain beyond the sensor range&mdash;conditioned
+        on the robot's proprioceptive context.
+        The navigation policy takes both the local and predicted extended latent as input to produce velocity actions,
+        while a pre-trained locomotion policy serves as a low-level controller.
       </p>
     </div>
 
-    <video autoplay muted loop playsinline preload="none" controls loading="lazy" height="100%">
-      <source src="./static/videos/h1_locovlm_demo.mp4" type="video/mp4">
-    </video>
-    
+    <figure class="image" style="margin-bottom: 2rem;">
+      <img src="./static/images/figures/framework-1.png" alt="DreamFlow Framework">
+    </figure>
+
+    <h3 class="title is-4 has-text-centered" style="margin-top: 2rem;">CFM Training Pipeline</h3>
+    <div class="content has-text-justified" style="margin-bottom: 1rem;">
+      <p>
+        The CFM training pipeline collects latent pairs from local and extended height maps using pre-trained VAE encoders.
+        The velocity field learns to transport the local latent towards the extended latent, conditioned on the proprioceptive context.
+        This enables the model to "dream" about unseen terrain from partial observations.
+      </p>
+    </div>
+
+    <figure class="image">
+      <img src="./static/images/figures/training_pipeline-1.png" alt="CFM Training Pipeline">
+    </figure>
+  </div>
 </section>
 
+<!-- ======== SIMULATION ENVIRONMENT ======== -->
+<section class="section is-small" id="simulation">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Simulation Environment</h2>
 
+    <div class="content has-text-justified" style="margin-bottom: 1rem;">
+      <p>
+        The simulation environment was built using IsaacGym. During training, obstacles of varying sizes are randomly distributed
+        on a flat terrain. We designed two evaluation environments&mdash;<strong>Maze</strong> and <strong>Hallway</strong>&mdash;to
+        test the robot's ability to avoid local minima and navigate through confined spaces.
+      </p>
+    </div>
 
+    <div class="sim-env-grid" style="margin-bottom: 2rem;">
+      <img src="./static/images/env/sim_env_1.png" alt="Sim Environment 1">
+      <img src="./static/images/env/sim_env_2.png" alt="Sim Environment 2">
+      <img src="./static/images/env/sim_env_3.png" alt="Sim Environment 3">
+      <img src="./static/images/env/sim_env_4.png" alt="Sim Environment 4">
+      <img src="./static/images/env/sim_env_5.png" alt="Sim Environment 5">
+      <img src="./static/images/env/sim_env_6.png" alt="Sim Environment 6">
+      <img src="./static/images/env/sim_env_test_1.png" alt="Maze Environment">
+      <img src="./static/images/env/sim_env_test_2.png" alt="Hallway Environment">
+    </div>
 
+    <figure class="image" style="margin-bottom: 1rem;">
+      <img src="./static/images/figures/exp_setup-1.png" alt="Experimental Setup">
+    </figure>
+  </div>
+</section>
+
+<!-- ======== HEIGHTMAP VISUALIZATION ======== -->
+<section class="section is-small has-background-black has-text-light" id="heightmap">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered has-text-white">Height Map Visualization</h2>
+    <div class="content has-text-justified">
+      <p>
+        DreamFlow extends the robot's perceptual horizon by predicting latent representations of terrain beyond the onboard sensor range.
+        Below we visualize the <strong>local height map</strong> (limited sensor range), <strong>extended height map</strong> (privileged ground truth), and the <strong>combined visualization</strong>.
+      </p>
+    </div>
+
+    <div class="heightmap-grid">
+      <div>
+        <p class="has-text-centered has-text-white" style="font-weight: bold; margin-bottom: 0.5rem;">Local Height Map</p>
+        <video autoplay muted loop playsinline controls>
+          <source src="./static/videos/heightmap/local.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div>
+        <p class="has-text-centered has-text-white" style="font-weight: bold; margin-bottom: 0.5rem;">Extended Height Map</p>
+        <video autoplay muted loop playsinline controls>
+          <source src="./static/videos/heightmap/extended.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div>
+        <p class="has-text-centered has-text-white" style="font-weight: bold; margin-bottom: 0.5rem;">Combined Visualization</p>
+        <video autoplay muted loop playsinline controls>
+          <source src="./static/videos/heightmap/combined.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ======== SIMULATION RESULTS ======== -->
+<section class="section" id="sim-results">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">Simulation Results</h2>
+
+    <div class="content has-text-justified" style="margin-bottom: 1.5rem;">
+      <p>
+        We compared DreamFlow against three baselines across Maze (Easy/Hard) and Hallway environments.
+        DreamFlow achieves the <strong>highest success rate (SR)</strong> and <strong>lowest collision rate (CR)</strong>,
+        demonstrating its ability to avoid local minima and collisions.
+      </p>
+    </div>
+
+    <!-- Results Table -->
+    <div class="table-container" style="margin-bottom: 2rem;">
+      <table class="table is-bordered is-hoverable is-fullwidth">
+        <thead>
+          <tr>
+            <th rowspan="2">Method</th>
+            <th colspan="3" class="has-text-centered">Maze (Easy)</th>
+            <th colspan="3" class="has-text-centered">Maze (Hard)</th>
+            <th colspan="3" class="has-text-centered">Hallway</th>
+          </tr>
+          <tr>
+            <th>SR&uarr;</th><th>SPL&uarr;</th><th>CR&darr;</th>
+            <th>SR&uarr;</th><th>SPL&uarr;</th><th>CR&darr;</th>
+            <th>SR&uarr;</th><th>SPL&uarr;</th><th>CR&darr;</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Baseline</td>
+            <td>83.2</td><td>0.23</td><td>3.9</td>
+            <td>76.5</td><td>0.37</td><td>54.8</td>
+            <td>35.8</td><td>0.21</td><td>5.1</td>
+          </tr>
+          <tr>
+            <td>Zhang <em>et al.</em></td>
+            <td>95.3</td><td>0.33</td><td>2.5</td>
+            <td>5.4</td><td>0.03</td><td>15.6</td>
+            <td>25.1</td><td>0.12</td><td>4.9</td>
+          </tr>
+          <tr>
+            <td>Diffusion</td>
+            <td>88.4</td><td>0.28</td><td>3.1</td>
+            <td>68.9</td><td>0.32</td><td>43.9</td>
+            <td>33.9</td><td>0.19</td><td>23.6</td>
+          </tr>
+          <tr style="font-weight: bold; background-color: #f0f7ff;">
+            <td>DreamFlow (Ours)</td>
+            <td>99.6</td><td>0.35</td><td>0.9</td>
+            <td>83.1</td><td>0.45</td><td>8.9</td>
+            <td>89.8</td><td>0.58</td><td>2.3</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="title is-4 has-text-centered">Trajectory Comparison</h3>
+    <div class="content has-text-justified" style="margin-bottom: 1rem;">
+      <p>
+        DreamFlow demonstrates smoother trajectories with better obstacle avoidance and more efficient path selection.
+        Other methods show frequent obstacle contacts and often get stuck in local minima.
+      </p>
+    </div>
+
+    <figure class="image" style="margin-bottom: 1.5rem;">
+      <img src="./static/images/figures/main_results-1.png" alt="Trajectory Comparison across Maze and Hallway">
+    </figure>
+
+    <figure class="image">
+      <img src="./static/images/figures/sim_results-1.png" alt="Additional Simulation Results">
+    </figure>
+  </div>
+</section>
+
+<!-- ======== REAL-WORLD EXPERIMENTS ======== -->
+<section class="section is-small has-background-black has-text-light" id="real-world">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered has-text-white">Real-World Experiments</h2>
+
+    <div class="content has-text-justified">
+      <p>
+        We validated DreamFlow on a Unitree Go2 quadrupedal robot equipped with two Livox Mid-360 LiDARs.
+        We tested in two real-world environments: a <strong>narrow corridor</strong> with tight passages,
+        and a <strong>cluttered environment</strong> with box obstacles and wall segments.
+      </p>
+    </div>
+
+    <!-- Real-world figure -->
+    <figure class="image" style="margin-bottom: 2rem;">
+      <img src="./static/images/figures/real_world-1.png" alt="Real-world Experiment Snapshots" style="border-radius: 8px;">
+    </figure>
+
+    <!-- Narrow Corridor (Experiment Room) -->
+    <h3 class="title is-4 has-text-white has-text-centered" style="margin-top: 2rem;">Narrow Corridor</h3>
+    <p class="has-text-centered" style="margin-bottom: 1rem;">
+      The baseline frequently collides with walls at corners, while DreamFlow achieves collision-free navigation by anticipating corridor layouts beyond its immediate perception.
+    </p>
+    <div class="video-compare" style="margin-bottom: 2rem;">
+      <div>
+        <p class="video-label has-text-white">Baseline</p>
+        <video autoplay muted loop playsinline controls>
+          <source src="./static/videos/exproom/baseline.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div>
+        <p class="video-label" style="color: #3298dc;">DreamFlow (Ours)</p>
+        <video autoplay muted loop playsinline controls>
+          <source src="./static/videos/exproom/dreamflow.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+
+    <!-- 1F Corridor -->
+    <h3 class="title is-4 has-text-white has-text-centered" style="margin-top: 2rem;">Corridor Navigation</h3>
+    <p class="has-text-centered" style="margin-bottom: 1rem;">
+      Side-by-side comparison from two camera angles in a corridor environment.
+    </p>
+    <div class="video-compare" style="margin-bottom: 1rem;">
+      <div>
+        <p class="video-label has-text-white">Baseline (Cam 1)</p>
+        <video autoplay muted loop playsinline controls>
+          <source src="./static/videos/1f/cam1_baseline.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div>
+        <p class="video-label" style="color: #3298dc;">DreamFlow (Cam 1)</p>
+        <video autoplay muted loop playsinline controls>
+          <source src="./static/videos/1f/cam1_dreamflow.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+    <div class="video-compare" style="margin-bottom: 2rem;">
+      <div>
+        <p class="video-label has-text-white">Baseline (Cam 2)</p>
+        <video autoplay muted loop playsinline controls>
+          <source src="./static/videos/1f/cam2_baseline.mp4" type="video/mp4">
+        </video>
+      </div>
+      <div>
+        <p class="video-label" style="color: #3298dc;">DreamFlow (Cam 2)</p>
+        <video autoplay muted loop playsinline controls>
+          <source src="./static/videos/1f/cam2_dreamflow.mp4" type="video/mp4">
+        </video>
+      </div>
+    </div>
+
+    <!-- Cluttered Environment -->
+    <h3 class="title is-4 has-text-white has-text-centered" style="margin-top: 2rem;">Cluttered Environment</h3>
+    <p class="has-text-centered" style="margin-bottom: 1rem;">
+      In cluttered environments with box obstacles and wall segments, DreamFlow successfully navigates without collisions through predictive terrain modeling.
+    </p>
+    <p class="has-text-centered has-text-white" style="font-weight: bold; margin-bottom: 0.5rem;">Baseline</p>
+    <div class="video-triple" style="margin-bottom: 1.5rem;">
+      <video autoplay muted loop playsinline controls>
+        <source src="./static/videos/cluttered/bl1_cam1.mp4" type="video/mp4">
+      </video>
+      <video autoplay muted loop playsinline controls>
+        <source src="./static/videos/cluttered/bl1_cam2.mp4" type="video/mp4">
+      </video>
+      <video autoplay muted loop playsinline controls>
+        <source src="./static/videos/cluttered/bl1_cam3.mp4" type="video/mp4">
+      </video>
+    </div>
+    <p class="has-text-centered" style="font-weight: bold; margin-bottom: 0.5rem; color: #3298dc;">DreamFlow (Ours)</p>
+    <div class="video-triple" style="margin-bottom: 1.5rem;">
+      <video autoplay muted loop playsinline controls>
+        <source src="./static/videos/cluttered/df_cam1.mp4" type="video/mp4">
+      </video>
+      <video autoplay muted loop playsinline controls>
+        <source src="./static/videos/cluttered/df_cam2.mp4" type="video/mp4">
+      </video>
+      <video autoplay muted loop playsinline controls>
+        <source src="./static/videos/cluttered/df_cam3.mp4" type="video/mp4">
+      </video>
+    </div>
+
+  </div>
+</section>
+
+<!-- ======== FOOTER ======== -->
 <footer class="footer">
   <div class="container">
     <div class="columns is-centered">
@@ -223,14 +514,6 @@
             This website is licensed under a <a rel="license"
               href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
               Commons Attribution-ShareAlike 4.0 International License</a>.
-          </p>
-          <p>
-            This means you are free to borrow and modify the <a
-              href="https://github.com/nerfies/nerfies.github.io">source
-              code</a> of this website as long as
-            you link back to the <a href="https://nerfies.github.io/">NeRFies</a> page in the footer.
-            Please remember to remove the analytics code included in the header of the website which
-            you do not want on your website.
           </p>
         </div>
       </div>
